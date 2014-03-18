@@ -1,4 +1,6 @@
 
+zdepth = k.zdepth;
+depth_ts = k.depth_ts;
 len = length(zdepth);
 depths = cell(1,len);
 

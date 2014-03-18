@@ -11,7 +11,6 @@ clc;
 % Flags
 check   = false;                 % Whether to do sanity check
 verbose = false;                 % Whether to show the details
-looping = true;                  % Whether to keep looping
 
 % Predefined values
 
@@ -21,6 +20,7 @@ looping = true;                  % Whether to keep looping
 
 %% Paths
 scriptDir  = fileparts(mfilename('fullpath'));
+dataDir    = '/home/qiong/ese650_data/project4';
 outputDir  = fullfile(scriptDir, '../results');
 if ~exist(outputDir, 'dir')
     mkdir(outputDir); 
