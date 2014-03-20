@@ -26,3 +26,12 @@ if ~exist(outputDir, 'dir')
     mkdir(outputDir); 
 end
 addpath(genpath(scriptDir));
+
+%% Load data
+dataIdx  = input('Please choose one dataset (20~24): ');
+load( fullfile(dataDir, ['Encoders', num2str(dataIdx)]) );
+load( fullfile(dataDir, ['Hokuyo', num2str(dataIdx)]), 'Hokuyo0' );
+Hokuyo   = Hokuyo0; clear Hokuyo0;
+imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
+
+%% Parse data
