@@ -1,5 +1,5 @@
 function [dc, alpha, ts] = parse_encoders(Encoders)
-% Run Script for SLAM for ESE 650 Learning in Robotics
+% PARSE_ENCODERS() parses the raw data from encoders
 % Written by Qiong Wang at University of Pennsylvania
 % 03/20/2014
 
@@ -19,7 +19,7 @@ ts  = Encoders.ts;
 % Compute distance
 dl = (FL + RL) / 2 * coef;
 dr = (FR + RR) / 2 * coef;
-dc = (dl + lr) / 2;
+dc = (dl + dr) / 2;
 
 % Compute rotation angle (Right hand rule)
 alpha = (dr - dl) / width;

@@ -10,13 +10,11 @@ clc;
 %% Parameters
 % Flags
 check   = false;                 % Whether to do sanity check
-verbose = false;                 % Whether to show the details
+verbose = true;                  % Whether to show the details
 
 % Predefined values
 
-
 % Params
-
 
 %% Paths
 scriptDir  = fileparts(mfilename('fullpath'));
@@ -32,10 +30,12 @@ dataIdx  = input('Please choose one dataset (20~24): ');
 load( fullfile(dataDir, ['Encoders', num2str(dataIdx)]) );
 load( fullfile(dataDir, ['Hokuyo', num2str(dataIdx)]), 'Hokuyo0' );
 Hokuyo   = Hokuyo0; clear Hokuyo0;
-imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
+Imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
 
 %% Parse data
-[dc, alpha, tsEn] = parse_encoders(Encoders);
-bias        = compute_bias(vals);
-[acc, Racc] = parse_acc(vals, bias);
-[vel, Rvel] = parse_gyro(vals, bias, tsImu);
+[dc, alpha, tsEn]  = parse_encoders(Encoders);
+[tilt, yaw, tsImu] = parse_imu(Imu, verbose);
+indices            = sync_time(tsImu, tsEn);
+theta              = angle_fuse(alpha, yaw, indices, tsEn, verbose);
+
+%% Dead Reckoning

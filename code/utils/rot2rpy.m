@@ -13,8 +13,8 @@ function [ varargout ] = rot2rpy(WRB)
 %       [-sin(pitch), cos(pitch)*sin(roll), cos(roll)*cos(pitch)];
 
 pitch = asin(-WRB(3,1));
-roll  = atan2(WRB(3,2), WRB(3,3));
-yaw   = atan2(WRB(2,1), WRB(1,1));
+roll  = atan2(WRB(3,2) / cos(pitch), WRB(3,3)/cos(pitch));
+yaw   = atan2(WRB(2,1) / cos(pitch), WRB(1,1) / cos(pitch));
 
 if nargout == 1 || nargout == 0
     varargout{1} = [roll; pitch; yaw];

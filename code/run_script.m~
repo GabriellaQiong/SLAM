@@ -10,13 +10,11 @@ clc;
 %% Parameters
 % Flags
 check   = false;                 % Whether to do sanity check
-verbose = false;                 % Whether to show the details
+verbose = true;                  % Whether to show the details
 
 % Predefined values
 
-
 % Params
-
 
 %% Paths
 scriptDir  = fileparts(mfilename('fullpath'));
@@ -35,5 +33,8 @@ Hokuyo   = Hokuyo0; clear Hokuyo0;
 Imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
 
 %% Parse data
-[ds, alphaEn, tsEn] = parse_encoders(Encoders);
-[vel, Rvel, ]       = parse_gyro(Imu);
+[dc, alpha, tsEn]  = parse_encoders(Encoders);
+[tilt, yaw, tsImu] = parse_imu(Imu, verbose);
+
+
+%% Dead Reckoning
