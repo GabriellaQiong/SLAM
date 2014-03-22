@@ -9,7 +9,7 @@ clc;
 
 %% Parameters
 % Flags
-check   = false;                 % Whether to do sanity check
+check   = true;                  % Whether to do sanity check
 verbose = true;                  % Whether to show the details
 
 % Predefined values
@@ -34,8 +34,16 @@ Imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
 
 %% Parse data
 [dc, alpha, tsEn]  = parse_encoders(Encoders);
-[tilt, yaw, tsImu] = parse_imu(Imu, verbose);
+[tilt, rpy, tsImu] = parse_imu(Imu, verbose);
+
+%%
 indices            = sync_time(tsImu, tsEn);
-theta              = angle_fuse(alpha, yaw, indices, tsEn, verbose);
+theta              = angle_fuse(alpha, rpy(3, :), indices, tsEn, verbose);
 
 %% Dead Reckoning
+% Initialize
+[x, y, theta] = dead_reckoning(dc, alpha, theta, tsEn, verbose);
+%%
+if check
+    testMapCorrelation
+end
