@@ -8,12 +8,11 @@ if nargin < 4
 end
 
 theta = 0;
-angle = cumsum(alpha);% - alpha / 2;
-% angle = theta;% - [theta(1) theta(1 : end -1)];
+angle = cumsum(alpha) - alpha / 2;
 dx    = dc .* cos(angle);
 dy    = dc .* sin(angle);
-x     = cumsum(dx);
-y     = cumsum(dy);
+x     = cumsum(dx) / 1000;
+y     = cumsum(dy) / 1000;
 theta = cumsum(theta + alpha);
 
 if nargout == 1 || nargout == 0
@@ -30,7 +29,7 @@ end
 
 ts = ts - ts(1);
 
-figure('Menubar', 'None', 'NumberTitle', 'off', 'Name', 'Dead Reckoning Visualization 1');
+figure('NumberTitle', 'off', 'Name', 'Dead Reckoning Data Visualization');
 subplot(3, 1, 1);
 plot(ts, x,'g','LineWidth',1.2);
 xlim([ts(1), ts(end)]); xlabel('t/s'); ylabel('x/mm')
@@ -47,6 +46,6 @@ xlim([ts(1), ts(end)]); xlabel('t/s'); ylabel('theta/rad')
 obj1= title('Plot of theta angle');
 set(obj1,'Interpreter','Latex'); clear obj1;
 
-figure('Menubar', 'None', 'NumberTitle', 'off', 'Name', 'Dead Reckoning Visualization 1');
+figure('NumberTitle', 'off', 'Name', 'Dead Reckoning Path Visualization');
 plot(x, y, 'LineWidth', 1.2);
 end

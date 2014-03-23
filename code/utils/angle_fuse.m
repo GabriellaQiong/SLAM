@@ -9,7 +9,7 @@ end
 
 % Sync data
 yawNew   = yaw([indices]);
-alphaCum = cumsum(alpha);
+alphaCum = wrapToPi(cumsum(alpha));
 
 assert(length(yawNew) == length(alphaCum), 'The steering angle synced should be the same length!');
 theta    = yawNew;
@@ -20,7 +20,7 @@ end
 
 t = t - t(1);
 
-figure('Menubar', 'None', 'NumberTitle', 'off', 'Name', 'Fuse steering angle data');
+figure('NumberTitle', 'off', 'Name', 'Fuse steering angle data');
 plot(t, (alphaCum),'r','LineWidth',1.2); hold on; 
 plot(t, (yawNew), 'g','LineWidth',1.2); 
 xlim([t(1), t(end)]); xlabel('t/s'); ylabel('angle/rad')

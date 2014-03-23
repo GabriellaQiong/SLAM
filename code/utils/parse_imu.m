@@ -47,21 +47,21 @@ rpy     = zeros(3, datNum);
 %       should be incremented
 for i = 1 : datNum
     q      = quatnormalize(quatmultiply(q, qDelta(i, :)));
-    rpy(:, i) = rot2rpy(quat2dcm(q));
+    rpy(:, i) = wrapToPi(rot2rpy(quat2dcm(q)));
 end
 
 if ~verbose
     return;
 end
 
-figure('Menubar', 'None', 'NumberTitle', 'off', 'Name', 'Imu Data Visualization');
+figure('NumberTitle', 'off', 'Name', 'Imu Data Visualization');
 subplot(2, 1, 1);
-plot(ts, tilt,'g','LineWidth',1.2);
+plot(ts  - Imu.ts(1), tilt,'g','LineWidth',1.2);
 xlim([ts(1) - Imu.ts(1), ts(end) - Imu.ts(1)]); xlabel('t/s'); ylabel('tilting/rad')
 obj1= title('Plot of tilting angle');
 set(obj1,'Interpreter','Latex'); clear obj1;
 subplot(2, 1, 2);
-plot(ts, rpy(3, :),'m','LineWidth',1.2);
+plot(ts - Imu.ts(1), rpy(3, :),'m','LineWidth',1.2);
 xlim([ts(1) - Imu.ts(1), ts(end) - Imu.ts(1)]); xlabel('t/s'); ylabel('yaw/rad')
 obj1= title('Plot of yaw angle');
 set(obj1,'Interpreter','Latex'); clear obj1;
