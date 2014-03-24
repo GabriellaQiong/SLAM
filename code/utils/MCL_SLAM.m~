@@ -57,7 +57,7 @@ for i = 200 : numData
     [x, y] = getMapCellsFromRay(pose(1), pose(2), xis(indGood), yis(indGood));
     effIdx  = (xcis > 1) & (ycis > 1) & (xcis < MAP.sizex) & (ycis < MAP.sizey);
     path   = sub2ind(size(MAP.map), x(effIdx), y(effIdx));
-    MAP.map(path) = max(MAP.map(path) - 50, 0);
+    MAP.map(path) = max(MAP.map(path) - 50, 0 );
     MAP.map(inds) = MAP.map(inds) + 50;
     
     

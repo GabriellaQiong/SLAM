@@ -42,7 +42,7 @@ theta              = angle_fuse(alpha, rpy(3, :), tsEn, verbose);
 %% Dead Reckoning
 % Initialize
 [x, y, theta] = dead_reckoning(dc, alpha, theta, tsEn, verbose);
-return;
+
 % Sync the time
 tsHo   = Hokuyo.ts;
 ranges = Hokuyo.ranges;
@@ -50,14 +50,14 @@ angles = Hokuyo.angles;
 
 if length(tsEn) > length(tsHo)
     ts  = tsHo;
-    ind = sync(tsEn, ts);
+    ind = sync_time(tsEn, ts);
     x   = x(ind);
     y   = y(ind);
-    rpy = rpy(ind);
+    rpy = rpy(:, ind);
 else
     ts     = tsEn;
-    ind    = sync(tsHo, ts);
-    ranges = ranges(ind);
+    ind    = sync_time(tsHo, ts);
+    ranges = ranges(:, ind);
     angles = angles(ind);
 end
 numData = length(ts);
