@@ -22,3 +22,4 @@ ssum = cumsum(s);
 
 % Return indices:
 index = ssum(s == 0) + 1;
+end

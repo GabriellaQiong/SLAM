@@ -14,8 +14,6 @@ MAP.sizey  = ceil((MAP.ymax - MAP.ymin) / MAP.res + 1);
 
 MAP.map = zeros(MAP.sizex,MAP.sizey,'int8');
 
-numData = length(tsEn);
-rpyNew  = rpy(:, indices);
 % assuming initial pose of x=0,y=0,yaw=0, put the first scan into the map
 % also, assume that roll and pitch are 0 (not true in general - use IMU!)
 

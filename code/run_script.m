@@ -35,15 +35,36 @@ Imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
 %% Parse data
 [dc, alpha, tsEn]  = parse_encoders(Encoders);
 [tilt, rpy, tsImu] = parse_imu(Imu, verbose);
-
-%%
 indices            = sync_time(tsImu, tsEn);
-theta              = angle_fuse(alpha, rpy(3, :), indices, tsEn, verbose);
+rpy                = rpy(:, indices);
+theta              = angle_fuse(alpha, rpy(3, :), tsEn, verbose);
 
 %% Dead Reckoning
 % Initialize
 [x, y, theta] = dead_reckoning(dc, alpha, theta, tsEn, verbose);
-%%
+return;
+% Sync the time
+tsHo   = Hokuyo.ts;
+ranges = Hokuyo.ranges;
+angles = Hokuyo.angles;
+
+if length(tsEn) > length(tsHo)
+    ts  = tsHo;
+    ind = sync(tsEn, ts);
+    x   = x(ind);
+    y   = y(ind);
+    rpy = rpy(ind);
+else
+    ts     = tsEn;
+    ind    = sync(tsHo, ts);
+    ranges = ranges(ind);
+    angles = angles(ind);
+end
+numData = length(ts);
+
+% Test the results
 if check
     testMapCorrelation
 end
+
+%% SLAM
