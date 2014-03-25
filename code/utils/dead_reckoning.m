@@ -11,8 +11,8 @@ theta = 0;
 angle = cumsum(alpha) - alpha / 2;
 dx    = dc .* cos(angle);
 dy    = dc .* sin(angle);
-x     = cumsum(dx) / 1000;
-y     = cumsum(dy) / 1000;
+x     = cumsum(dx);
+y     = cumsum(dy);
 theta = cumsum(theta + alpha);
 
 if nargout == 1 || nargout == 0

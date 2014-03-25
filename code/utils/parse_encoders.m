@@ -20,7 +20,7 @@ ts  = Encoders.ts;
 % Compute distance
 dl = (FL + RL) / 2 * coef;
 dr = (FR + RR) / 2 * coef;
-dc = (dl + dr) / 2;
+dc = (dl + dr) / 2 / 1000;
 
 % Compute rotation angle (Right hand rule)
 alpha = (dr - dl) / width * scale;

@@ -3,8 +3,8 @@
 % figure; imshow(squeeze(k.rgb(1,:,:,:))/255) % first RGB frame
 % figure; imshow(squeeze(k.depth(1,:,:))/2048) % first depth frame
 
-x = load(fullfile(dataDir, 'kinect20.mat'));
+% x = load(fullfile(dataDir, 'kinect20.mat'));
 f = fopen('temp.jpg', 'w');
-fwrite(f, x.jrgb{1});
+fwrite(f, x.zdepth{1});
 fclose(f);
 imshow('temp.jpg');

@@ -1,4 +1,4 @@
-
+k = load(fullfile(dataDir, ['kinect', num2str(dataIdx)]));
 zdepth = k.zdepth;
 depth_ts = k.depth_ts;
 len = length(zdepth);
@@ -11,10 +11,8 @@ end
 splitSize = 500;
 nSplit = ceil(len/splitSize);
 
-dataSet = 20;
-
 for jj=1:nSplit
-  fName  = sprintf('kinect%d_depth_%d',dataSet,jj);
+  fName  = sprintf('kinect%d_depth_%d',dataIdx,jj);
   inds = (jj-1)*splitSize+1:jj*splitSize;
   if (inds(end) > len)
     inds = (jj-1)*splitSize+1:len;
@@ -22,6 +20,6 @@ for jj=1:nSplit
   udepth = depths(inds);
   udepth_ts = depth_ts(inds);
   
-  save(fName,'udepth','udepth_ts');
+  save(fullfile(dataDir, fName),'udepth','udepth_ts');
   fprintf('saved split number %d\n',jj);
 end

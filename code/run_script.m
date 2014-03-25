@@ -9,12 +9,8 @@ clc;
 
 %% Parameters
 % Flags
-check   = true;                  % Whether to do sanity check
+check   = false;                  % Whether to do sanity check
 verbose = true;                  % Whether to show the details
-
-% Predefined values
-
-% Params
 
 %% Paths
 scriptDir  = fileparts(mfilename('fullpath'));
@@ -31,6 +27,7 @@ load( fullfile(dataDir, ['Encoders', num2str(dataIdx)]) );
 load( fullfile(dataDir, ['Hokuyo', num2str(dataIdx)]), 'Hokuyo0' );
 Hokuyo   = Hokuyo0; clear Hokuyo0;
 Imu      = load(fullfile(dataDir, ['imuRaw', num2str(dataIdx)]));
+unpackKinectDepth;
 
 %% Parse data
 [dc, alpha, tsEn]  = parse_encoders(Encoders);
@@ -58,7 +55,6 @@ else
     ts     = tsEn;
     ind    = sync_time(tsHo, ts);
     ranges = ranges(:, ind);
-    angles = angles(ind);
 end
 numData = length(ts);
 
@@ -68,3 +64,12 @@ if check
 end
 
 %% SLAM
+MCL_SLAM;
+
+%% Integrate Kinect data
+dFiles = dir(fullfile(dataDir, '*depth*'));
+numSp  = numel(dFiles);
+fName  = sprintf('kinect%d_depth_%d',dataIdx,jj);
+load(fullfile(dataDir, fName));
+for
+sync_time(udepth_ts, )

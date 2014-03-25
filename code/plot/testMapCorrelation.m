@@ -1,25 +1,25 @@
 %% Mapping
-global MAP
+% global MAP
 
-MAP.res   = 0.05;  %meters
+MAP1.res   = 1;  %meters
 
-MAP.xmin  = -40;  %meters
-MAP.ymin  = -40;
-MAP.xmax  =  40;
-MAP.ymax  =  40;
+MAP1.xmin  = -40;  %meters
+MAP1.ymin  = -40;
+MAP1.xmax  =  40;
+MAP1.ymax  =  40;
 
 
 % dimensions of the map
-MAP.sizex  = ceil((MAP.xmax - MAP.xmin) / MAP.res + 1); %cells
-MAP.sizey  = ceil((MAP.ymax - MAP.ymin) / MAP.res + 1);
+MAP1.sizex  = ceil((MAP1.xmax - MAP1.xmin) / MAP1.res + 1); %cells
+MAP1.sizey  = ceil((MAP1.ymax - MAP1.ymin) / MAP1.res + 1);
 
-MAP.map = zeros(MAP.sizex,MAP.sizey,'int8');
+MAP1.map = zeros(MAP1.sizex,MAP1.sizey,'int8');
 
 % assuming initial pose of x=0,y=0,yaw=0, put the first scan into the map
 % also, assume that roll and pitch are 0 (not true in general - use IMU!)
 
 % % make the origin of the robot's frame at its geometrical center
-% h1 = figure('NumberTitle', 'off', 'Name', 'Test LIDAR Visualization');
+h1 = figure('NumberTitle', 'off', 'Name', 'Test LIDAR Visualization');
 % set(h1,'units','normalized','position',[0 .3 .6 .6]);
 % ht = suptitle({'Test Map Correlation'; sprintf('Time = %05f s',tsEn(1) - tsEn(1))});
 
@@ -53,33 +53,33 @@ for i = 200 : numData
     ys1 = Y(2,:);
     
     % convert from meters to cells
-    xis = m2cell(xs1, MAP.xmin, MAP.res);  % ceil((xs1 - MAP.xmin) ./ MAP.res);
-    yis = m2cell(ys1, MAP.ymin, MAP.res);  % ceil((ys1 - MAP.ymin) ./ MAP.res);
+    xis = m2cell(xs1, MAP1.xmin, MAP1.res);  % ceil((xs1 - MAP.xmin) ./ MAP.res);
+    yis = m2cell(ys1, MAP1.ymin, MAP1.res);  % ceil((ys1 - MAP.ymin) ./ MAP.res);
     
-    xSub = m2cell(x(i), MAP.xmin, MAP.res);
-    ySub = m2cell(y(i), MAP.ymin, MAP.res);
+    xSub = m2cell(x(i), MAP1.xmin, MAP1.res);
+    ySub = m2cell(y(i), MAP1.ymin, MAP1.res);
     
     % check the indices and populate the map
-    indGood = (xis > 1) & (yis > 1) & (xis < MAP.sizex) & (yis < MAP.sizey);
-    inds    = sub2ind(size(MAP.map),xis(indGood),yis(indGood));
+    indGood = (xis > 1) & (yis > 1) & (xis < MAP1.sizex) & (yis < MAP1.sizey);
+    inds    = sub2ind(size(MAP1.map),xis(indGood),yis(indGood));
     [xPath, yPath] = getMapCellsFromRay(xSub, ySub, xis(indGood), yis(indGood));
-    effect  = (xPath > 1) & (yPath > 1) & (xPath < MAP.sizex) & (yPath < MAP.sizey);
-    path    = sub2ind(size(MAP.map), xPath(effect), yPath(effect));
-    MAP.map(path) = max(MAP.map(path) - 50, 0);
-    MAP.map(inds) = MAP.map(inds) + 50;
+    effect  = (xPath > 1) & (yPath > 1) & (xPath < MAP1.sizex) & (yPath < MAP1.sizey);
+    path    = sub2ind(size(MAP1.map), xPath(effect), yPath(effect));
+    MAP1.map(path) = max(MAP1.map(path) - 50, 0);
+    MAP1.map(inds) = MAP1.map(inds) + 50;
     
     % compute correlation
-    x_im = MAP.xmin:MAP.res:MAP.xmax; %x-positions of each pixel of the map
-    y_im = MAP.ymin:MAP.res:MAP.ymax; %y-positions of each pixel of the map
+    xim = MAP1.xmin:MAP1.res:MAP1.xmax; %x-positions of each pixel of the map
+    yim = MAP1.ymin:MAP1.res:MAP1.ymax; %y-positions of each pixel of the map
     
-    x_range = -1:0.05:1;
-    y_range = -1:0.05:1;
+    xRange = -1:0.05:1;
+    yRange = -1:0.05:1;
     
-    c = map_correlation(MAP.map,x_im,y_im,Y(1:3,:),x_range,y_range);
+    c = map_correlation(MAP1.map,xim,yim,Y(1:3,:),xRange,yRange);
     
 %     set(ht, 'String', {'Test Map Correlation'; sprintf('Time = %05f s',tsEn(i) - tsEn(1))});
 %     
-%     % plot original lidar points
+% %     plot original lidar points
 %     subplot(1, 3, 1);
 %     plot(xs1,ys1,'.');
 %     axis square;
@@ -89,7 +89,10 @@ for i = 200 : numData
 %     % plot map
 %     subplot(1, 3, 2);
 % %     imagesc(MAP.map);
-%     imshow(MAP.map);
+%     imshow(MAP1.map);
+% %     hold on;
+% %     plot(xSub, ySub, 'MarkerSize', 100, 'MarkerFaceColor','g');
+% %     quiver(xSub, ySub, cos(alpha(i)), sin(alpha(i)));
 % %     colormap(winter);
 %     axis square;
 %     title('Plot of the map');
@@ -102,5 +105,5 @@ for i = 200 : numData
 %     axis square;
 %     drawnow;
 end
-
-imagesc(MAP.map);
+axis square;
+imagesc(MAP1.map);
