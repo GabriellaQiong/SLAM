@@ -1,3 +1,9 @@
+k       = load(fullfile(dataDir, ['kinect', num2str(dataIdx)]));
+depthTs = k.depth_ts;
+rgbTs   = k.rgb_ts;
+jrgb    = k.jrgb;
+zdepth  = k.zdepth;
+
 t0Log  = min(depth_ts(1),rgb_ts(1));
 tStart = GetUnixTime();
 
